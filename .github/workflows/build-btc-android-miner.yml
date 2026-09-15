@@ -1,6 +1,8 @@
 name: Build BTC Android Miner APK
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
