@@ -1,19 +1,27 @@
-name: Build BTC Android Miner APK
+name: Build NerdOCTAXE Mobile APK
 
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [nerdoctaxe-ui]
 
 jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout BTC Android Miner
+      - name: Checkout UI customizations
+        uses: actions/checkout@v4
+        with:
+          path: custom
+
+      - name: Checkout BTC Android Miner engine
         uses: actions/checkout@v4
         with:
           repository: VirtusVerbis/BTC_Anrdoid_Miner
           path: miner
+
+      - name: Apply NerdOCTAXE Mobile UI
+        run: python3 custom/tools/patch_nerdoctaxe_ui.py
 
       - name: Set up Java
         uses: actions/setup-java@v5
@@ -53,6 +61,6 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: btc-android-miner-debug
+          name: nerdoctaxe-mobile-debug
           path: miner/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
